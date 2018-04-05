@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drum Kit Simulator</title>
+	<script type="text/javascript" src="paper-full.js"></script>
+	<link rel="stylesheet" type="text/css" href="DrumKit.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.9/howler.js"></script>
+
+
+	<script type="text/paperscript" canvas="myCanvas">
+
+
+var keyData = {
+	e: {
+		sound: new Howl({
+  		src: ['sounds/corona.mp3']
+		}),
+		color: '#3498db',
+		x : 25.5,
+		y : 15.8
+	},
+	s: {
+		sound: new Howl({
+  		src: ['sounds/corona.mp3']
+		}),
+		color: '#9b59b6',
+		x : 10.5,
+		y : 37.5
+	},
+	c: {
+		sound: new Howl({
+  		src: ['sounds/veil.mp3']
+		}),
+		color: '#34495e',
+		x : 14.2,
+		y : 77.5
+	},
+	f: {
+		sound: new Howl({
+  		src: ['sounds/splits.mp3']
+		}),
+		color: '#16a085',
+		x : 35.1,
+		y : 49
+	},
+	j: {
+		sound: new Howl({
+  		src: ['sounds/splits.mp3']
+		}),
+		color: '#27ae60',
+		x : 60.8,
+		y : 49
+	},
+	b: {
+		sound: new Howl({
+  		src: ['sounds/dotted-spiral.mp3']
+		}),
+		color: '#2980b9',
+		x : 48,
+		y : 82.2
+	},
+	y: {
+		sound: new Howl({
+			src: ['sounds/prism-1.mp3']
+		}),
+		color: '#8e44ad',
+		x : 48,
+		y : 15.8
+	},
+	i: {
+		sound: new Howl({
+  		src: ['sounds/wipe.mp3']
+		}),
+		color: '#2980b9',
+		x : 74.5,
+		y : 17.2
+	},
+	l: {
+		sound: new Howl({
+		src: ['sounds/zig-zag.mp3']
+		}),
+		color: '#8e44ad',
+		x : 91.5,
+		y : 35.8
+	},
+	m: {
+		sound: new Howl({
+  		src: ['sounds/moon.mp3']
+		}),
+		color: '#2c3e50',
+		x : 81,
+		y : 77.5
+	}
+}
+
+	var circles = [];
+
+	function onKeyDown(event) {
+
+		//sound.play();
+		if(keyData[event.key]){	
+			var x = (view.size.width-40)*(keyData[event.key].x)/100+20;	
+			y = view.size.width*0.57*(keyData[event.key].y)/100+20
+			var point = new Point(x, y);
+			var newCircle = new Path.Circle(point, 1);
+			newCircle.fillColor = (keyData[event.key].color);
+			newCircle.opacity = 0.4;
+			keyData[event.key].sound.play();
+			circles.push(newCircle);
+		}
+	}
+
+	function onFrame(event) {
+		for(var i = 0; i < circles.length;i++){
+			circles[i].fillColor.hue += 1;
+			circles[i].scale(1.1)
+			if(circles[i].area > 50000){
+		      circles[i].remove(); 
+		      circles.splice(i, 1);
+		      i--;
+
+		      console.log(circles);
+		    }
+	}
+	
+}
+
+
+</script>
+</head>
+<body>
+
+<div style="margin: 20px">
+	<canvas id="myCanvas" resize>
+	</canvas>
+	<img id="drums" src="drums.jpeg">
+</div>
+
+<div class="container">
+	<div class="jumbotron">
+			<h1>Drum Kit Simulator</h1>
+			<p>Try to make some music or noise! Enjoy it!</p>
+			<h5>By Zhiyang</h5>
+	</div>
+</div>
+
+</body>
+</html>
